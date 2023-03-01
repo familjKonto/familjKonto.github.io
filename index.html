@@ -1,11 +1,52 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>My GitHub Pages Site</title>
-  </head>
-  <body>
-    <h1>Hello world!</h1>
-    <p>Welcome to my GitHub Pages site!</p>
-  </body>
-</html>
+<head>
+  <title>My Form</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script>
+    function HandleForms() {
+      // Get the form data
+      var formData = {
+        name: $('#name').val(),
+        email: $('#email').val(),
+        message: $('#message').val()
+      };
+      
+      // Make an AJAX request to the server-side endpoint
+      $.ajax({
+        type: 'POST',
+        url: 'HandleForms.aspx/HandleForms',
+        data: JSON.stringify(formData),
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        success: function(response) {
+          // Display the success or error message
+          $('#message').text(response.message);
+        },
+        error: function(xhr, textStatus, errorThrown) {
+          // Display an error message
+          $('#message').text('An error occurred while processing the form.');
+        }
+      });
+      
+      // Prevent the form from submitting normally
+      return false;
+    }
+  </script>
+</head>
+<body>
+  <h1>My Form</h1>
+  <form onsubmit="return HandleForms()">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name"><br>
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email"><br>
+    <label for="message">Message:</label>
+    <textarea id="message" name="message"></textarea><br>
+    <input type="submit" value="Submit">
+  </form>
 
+  <div id="successMessage"></div>
+  <div id="errorMessage"></div>
+</body>
+</html>
